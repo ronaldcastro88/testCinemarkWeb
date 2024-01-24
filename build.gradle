@@ -9,17 +9,14 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath('net.serenity-bdd:serenity-gradle-plugin:2.1.4')
-        //classpath('com.qiip:test-automation-qiip-utils:1.6.1')
     }
 }
 
@@ -29,8 +26,6 @@ ext {
 }
 
 dependencies {
-    implementation "co.com.devco.automation:automationDevcoLibrary:1.3.6"
-    //implementation "com.qiip:test-automation-qiip-utils:1.6.1"
     implementation "net.serenity-bdd:serenity-rest-assured:$rootProject.ext.serenityVersion"
     implementation "net.serenity-bdd:serenity-ensure:$rootProject.ext.serenityVersion"
     implementation "net.serenity-bdd:serenity-screenplay-rest:$rootProject.ext.serenityVersion"

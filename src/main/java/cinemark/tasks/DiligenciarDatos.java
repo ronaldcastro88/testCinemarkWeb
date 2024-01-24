@@ -1,103 +1,83 @@
-package banco.tasks;
+package cinemark.tasks;
 
-import banco.models.factories.Usuario;
-import banco.questions.CapturarTextoOperacionMatematica;
-import banco.questions.CapturarTextoRepetitivo;
-import banco.questions.CapturarTextoSegundaOperacionMatematica;
-import banco.questions.CapturarTextoTerceraOperacionMatematica;
+import cinemark.models.factories.Usuario;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
-import net.serenitybdd.screenplay.actions.type.Type;
+import net.serenitybdd.screenplay.waits.WaitUntil;
 import net.thucydides.core.annotations.Step;
 
-import javax.script.ScriptException;
+import static cinemark.userinterfaces.DashboardPage.SELECTOR_CIUDAD;
+import static cinemark.userinterfaces.DashboardPage.BOTON_CREAR_CUENTA;
+import static cinemark.userinterfaces.DashboardPage.BOTON_CREAR_CUENTA_SIN_MEMBRESIA;
+import static cinemark.userinterfaces.DashboardPage.CAMPO_NOMBRE;
+import static cinemark.userinterfaces.DashboardPage.CAMPO_APELLIDO;
+import static cinemark.userinterfaces.DashboardPage.SELECTOR_GENERO;
+import static cinemark.userinterfaces.DashboardPage.SELECTOR_MASCULINO;
+import static cinemark.userinterfaces.DashboardPage.CAMPO_NUMERO_DOCUMENTO;
+import static cinemark.userinterfaces.DashboardPage.CAMPO_CELULAR;
+import static cinemark.userinterfaces.DashboardPage.CAMPO_DIRECCION;
+import static cinemark.userinterfaces.DashboardPage.CAMPO_CORREO_ELECTRONICO;
+import static cinemark.userinterfaces.DashboardPage.CONFIRMAR_CORREO_ELECTRONICO;
+import static cinemark.userinterfaces.DashboardPage.CAMPO_CONTRASENA;
+import static cinemark.userinterfaces.DashboardPage.CONFIRMAR_CONTRASENA;
+import static cinemark.userinterfaces.DashboardPage.SELECTOR_BOGOTA;
+import static cinemark.userinterfaces.DashboardPage.SELECTOR_TEATRO;
+import static cinemark.userinterfaces.DashboardPage.SELECTOR_MULTIPLAZA;
+import static cinemark.userinterfaces.DashboardPage.CHECK_TERMINOS;
+import static cinemark.userinterfaces.DashboardPage.BOTON_CREAR_CUENTA_FORM;
 
-import static banco.tasks.ConvierteDatos.evaluarExpresion;
-import static banco.tasks.ConvierteDatos.convertirAEntero;
-import static banco.tasks.ConvierteDatos.extraerNumeros;
-import static banco.tasks.ConvierteDatos.extraerLetraEspecial;
-import static banco.userinterfaces.DashboardPage.*;
-
+import static cinemark.userinterfaces.HomePage.BOTON_CERRAR_MODAL;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isPresent;
 
 public class DiligenciarDatos implements Task {
-
     private final String nombre;
     private final String apellido;
+    private final String direccion;
+    private final String pass;
 
 
-    public DiligenciarDatos(String nombre, String apellido){
+    public DiligenciarDatos(String nombre, String apellido, String direccion, String pass) {
         this.nombre = nombre;
         this.apellido = apellido;
+        this.direccion = direccion;
+        this.pass = pass;
     }
 
     public static Usuario delFormulario() {
         return new Usuario();
-        //return new DiligenciarDatos();
-        return Tasks.instrumented(DiligenciarDatos.class);
     }
 
     @Override
     @Step("{1} Diligencia los datos del formulario ")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(Click.on(BOTON_CREAR_CUENTA),
-                //Type.theValue(cadenaRepetida.toString()).into(SELECCION_TEXT_AREA),
+        String correo;
+        actor.attemptsTo(
+                Click.on(BOTON_CERRAR_MODAL),
+                Click.on(BOTON_CREAR_CUENTA),
                 Click.on(BOTON_CREAR_CUENTA_SIN_MEMBRESIA),
                 Enter.theValue(nombre).into(CAMPO_NOMBRE),
-                Enter.theValue(apellido).into(CAMPO_APELLIDO));
-        /*String textoOperacionMatematica;
-        long entero;
-        for (int i=0;i<10;i++){
-            int f;
-            for (f=0;f<2;f++) {
-                double resultado;
-                try {
-                    if (f == 0) {
-                        textoOperacionMatematica = actor.asksFor(CapturarTextoOperacionMatematica.deLaPagina());
-                        System.out.println("Texto de la operación matemática: " + textoOperacionMatematica);
-                        resultado = evaluarExpresion(textoOperacionMatematica);
-                        entero = Math.round(resultado);
-                        System.out.println("Resultado 1: " + entero);
-                        actor.attemptsTo(
-                                Click.on(SELECCION_RESPUESTA_OPERACION_MATEMATICA),
-                                Click.on(resultadoRespuestaOperacionMatematica(String.valueOf(entero))));
-                    } else if (f == 1) {
-                        textoOperacionMatematica = actor.asksFor(CapturarTextoSegundaOperacionMatematica.deLaPagina());
-                        System.out.println("Texto de la operación matemática 2: " + textoOperacionMatematica);
-                        resultado = evaluarExpresion(textoOperacionMatematica);
-                        entero = Math.round(resultado);
-                        System.out.println("Resultado 2: " + entero);
-                        actor.attemptsTo(
-                                Click.on(resultadoRespuestaCheckRadioButton(String.valueOf(entero))));
-                    }
-                }
-                catch (ScriptException e) {
-                    System.out.println("Error al evaluar la expresión: " + e.getMessage());
-                }
-            }
-            String numerosExtraidos = actor.asksFor(CapturarTextoTerceraOperacionMatematica.deLaPagina());
-            System.out.println("Expresión original: " + numerosExtraidos);
-            numerosExtraidos = extraerNumeros(numerosExtraidos);
-            System.out.println("Numeros extraidos: " + numerosExtraidos);
-            entero = convertirAEntero(numerosExtraidos);
-            System.out.println("Valor entero: " + entero);
-            actor.attemptsTo(
-                 CapturarValoresHtml.deLaLista(SELECCION_LISTADO_CHECKBOX, entero));
-            numerosExtraidos = actor.asksFor(CapturarTextoRepetitivo.deLaPagina());
-            String extraerCaracterRepetitivo = extraerLetraEspecial(numerosExtraidos);
-            System.out.println("EL CARACTER REPETITIVO ES: " + extraerCaracterRepetitivo);
-            numerosExtraidos = extraerNumeros(numerosExtraidos);
-            System.out.println("Numeros extraidos DEL TEXTO REPETITIVO ES : " + numerosExtraidos);
-            entero = convertirAEntero(numerosExtraidos);
-            System.out.println("EL VALOR ENTERO CONVERTIDO ES: " + entero);
-                    actor.attemptsTo(Click.on(SELECCION_TEXT_AREA));
-            StringBuilder cadenaRepetida = new StringBuilder();
-            for (int g=0;g<entero;g++){
-                cadenaRepetida.append(extraerCaracterRepetitivo);
-            }*/
-
-                }
+                Enter.theValue(apellido).into(CAMPO_APELLIDO),
+                Click.on(SELECTOR_GENERO),
+                Click.on(SELECTOR_MASCULINO),
+                ConvierteDatos.aleatorio());
+        String numeroAleatorio = actor.recall("numeroAleatorio");
+        System.out.println("Número aleatorio de 10 caracteres: " + numeroAleatorio);
+        correo = numeroAleatorio + "@yopmail.com";
+        actor.attemptsTo(Enter.theValue(numeroAleatorio).into(CAMPO_NUMERO_DOCUMENTO),
+                Enter.theValue(numeroAleatorio).into(CAMPO_CELULAR),
+                Enter.theValue(direccion).into(CAMPO_DIRECCION),
+                Enter.theValue(correo).into(CAMPO_CORREO_ELECTRONICO),
+                Enter.theValue(correo).into(CONFIRMAR_CORREO_ELECTRONICO),
+                Enter.theValue(pass).into(CAMPO_CONTRASENA),
+                Enter.theValue(pass).into(CONFIRMAR_CONTRASENA),
+                Click.on(SELECTOR_CIUDAD),
+                Click.on(SELECTOR_BOGOTA),
+                Click.on(SELECTOR_TEATRO),
+                Click.on(SELECTOR_MULTIPLAZA),
+                Click.on(CHECK_TERMINOS),
+                WaitUntil.the(BOTON_CREAR_CUENTA_FORM, isPresent()).forNoMoreThan(5).seconds(),
+                Click.on(BOTON_CREAR_CUENTA_FORM));
+    }
 }
-

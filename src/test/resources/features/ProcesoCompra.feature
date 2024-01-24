@@ -1,8 +1,8 @@
 # language: es
-Característica: Diligenciamiento del formulario de creación de cuenta
+Característica: Compra exitosa de un boleto para ver una pelicula
 
-  @CreacionCuenta
-  Escenario: Diligenciamiento exitosamente del formulario
-    Dado el usuario quiere crear una cuenta en el portal de Cinemark
-    Cuando diligencia el formulario de registro
-    Entonces debe mostrar el mensaje REGISTRO EXITOSO
+  @ProcesoCompra
+  Escenario: Compra exitosa de un ticket en el portal de Cinemark
+    Dado el usuario se encuentra autenticado en el portal de Cinemark
+    Cuando realiza todo el proceso el carrito de compras
+    Entonces se muestra el QR del tiquete de compra exitosa con el código de confirmación

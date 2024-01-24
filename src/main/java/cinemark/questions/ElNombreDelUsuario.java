@@ -9,10 +9,10 @@ import net.thucydides.core.annotations.Step;
 import static cinemark.userinterfaces.DashboardPage.NOMBRE_USUARIO_DASHBOARD;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isPresent;
 
-public class ElNombreDelUsario implements Question<String> {
+public class ElNombreDelUsuario implements Question<String> {
 
-    public static ElNombreDelUsario enElDashboard() {
-        return new ElNombreDelUsario();
+    public static ElNombreDelUsuario enElDashboard() {
+        return new ElNombreDelUsuario();
     }
 
     @Override

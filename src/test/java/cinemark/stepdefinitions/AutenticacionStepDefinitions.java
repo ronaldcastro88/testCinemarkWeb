@@ -1,10 +1,10 @@
-package banco.stepdefinitions;
+package cinemark.stepdefinitions;
 
-import banco.exceptions.AutenticacionCinemarkError;
-import banco.interactions.IrA;
-import banco.questions.ElNombreDelUsario;
-import banco.tasks.IniciaSesion;
-import banco.utils.PaginaWeb;
+import cinemark.exceptions.PortalCinemarkError;
+import cinemark.interactions.IrA;
+import cinemark.questions.ElNombreDelUsuario;
+import cinemark.tasks.IniciaSesion;
+import cinemark.utils.PaginaWeb;
 import cucumber.api.java.es.Cuando;
 import cucumber.api.java.es.Dado;
 import cucumber.api.java.es.Entonces;
@@ -21,6 +21,7 @@ public class AutenticacionStepDefinitions {
         theActorCalled(actor).wasAbleTo(
                 IrA.laPagina(PaginaWeb.CINEMARK.getUrl()));
     }
+
     @Cuando("^el usuario ingresa sus credenciales$")
     public void elUsuarioIngresaSusCredenciales() {
         theActorInTheSpotlight().attemptsTo(IniciaSesion.enCinemark().conDatosCorrectos());
@@ -29,7 +30,7 @@ public class AutenticacionStepDefinitions {
 
     @Entonces("^debe ver el nombre del usuario (.*) en el dashboard$")
     public void debeVerElNombreDelUsuarioRonaldCastroEnElDashboard(String nombreUsuario) {
-        theActorInTheSpotlight().should(GivenWhenThen.seeThat(ElNombreDelUsario.enElDashboard(), equalTo(nombreUsuario))
-                .orComplainWith(AutenticacionCinemarkError.class, AutenticacionCinemarkError.INICIO_DE_SESION_FALLIDO));
+        theActorInTheSpotlight().should(GivenWhenThen.seeThat(ElNombreDelUsuario.enElDashboard(), equalTo(nombreUsuario))
+                .orComplainWith(PortalCinemarkError.class, PortalCinemarkError.INICIO_DE_SESION_FALLIDO));
     }
 }

@@ -15,14 +15,15 @@ import net.serenitybdd.screenplay.actions.Scroll;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 
 import static cinemark.userinterfaces.DashboardPage.*;
-import static cinemark.userinterfaces.PrivadoPage.*;
 import static cinemark.userinterfaces.PrivadoPage.SELECTOR_CIUDAD;
+import static cinemark.userinterfaces.PrivadoPage.*;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 import static org.hamcrest.Matchers.equalTo;
 
-public class ProcesoCompra {
+public class ProcesoCompraStepDefinitions {
+
     @Dado("^(.*)se encuentra autenticado en el portal de Cinemark$")
     public void elUsuarioSeEncuentraAutenticadoEnElPortalDeCinemark(String actor) {
         theActorCalled(actor).wasAbleTo(
@@ -63,15 +64,13 @@ public class ProcesoCompra {
                 WaitUntil.the(CAMPO_NUMERO_TARJETA, isVisible()).forNoMoreThan(20).seconds(),
                 Enter.theValue("4111111111111111").into(CAMPO_NUMERO_TARJETA),
                 Enter.theValue("APPROVED").into(CAMPO_NOMBRE_TARJETA),
-                //Enter.theValue("2025/06").into(CAMPO_FECHA_VENCIMIENTO),
-                //Enter.theValue("2025/05").into(CAMPO_FECHA_VENCIMIENTO),
                 Enter.theValue("777").into(CAMPO_CVV),
                 Click.on(SELECTOR_CUOTAS),
                 Click.on(SELECTOR_CANTIDAD),
                 Click.on(CHECK_TERMINOS_CARRITO),
                 Click.on(BOTON_CONTINUAR),
                 Click.on(BOTON_ACEPTAR_PAGO)
-                );
+        );
     }
 
     @Entonces("^se muestra el QR del tiquete de compra exitosa con el (.*)$")

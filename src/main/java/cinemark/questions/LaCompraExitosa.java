@@ -2,23 +2,28 @@ package cinemark.questions;
 
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Question;
+import net.serenitybdd.screenplay.actions.Click;
+import net.serenitybdd.screenplay.actions.Scroll;
 import net.serenitybdd.screenplay.questions.Text;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import net.thucydides.core.annotations.Step;
 
-import static cinemark.userinterfaces.DashboardPage.NOMBRE_USUARIO_DASHBOARD;
+import static cinemark.userinterfaces.PrivadoPage.BOTON_FINALIZAR;
+import static cinemark.userinterfaces.PrivadoPage.QR_EXITOSO;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isPresent;
 
-public class ElNombreDelUsario implements Question<String> {
+public class LaCompraExitosa implements Question<String> {
 
-    public static ElNombreDelUsario enElDashboard() {
-        return new ElNombreDelUsario();
+    public static LaCompraExitosa delTiquete() {
+        return new LaCompraExitosa();
     }
 
     @Override
-    @Step("Verifica el nombre del usuario en el dashboard principal")
+    @Step("Verifica el QR con la compra exitosa")
     public String answeredBy(Actor actor) {
-        actor.attemptsTo(WaitUntil.the(NOMBRE_USUARIO_DASHBOARD,isPresent()).forNoMoreThan(5).seconds());
-        return Text.of(NOMBRE_USUARIO_DASHBOARD).viewedBy(actor).asString();
+        actor.attemptsTo(WaitUntil.the(QR_EXITOSO,isPresent()).forNoMoreThan(80).seconds(),
+                Scroll.to(BOTON_FINALIZAR).andAlignToTop(),
+                Click.on(BOTON_FINALIZAR));
+        return Text.of(QR_EXITOSO).viewedBy(actor).asString();
     }
 }

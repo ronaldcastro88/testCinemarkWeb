@@ -1,6 +1,7 @@
-package banco.models.factories;
+package cinemark.models.factories;
 
-import banco.tasks.IniciaSesion;
+import cinemark.tasks.DiligenciarDatos;
+import cinemark.tasks.IniciaSesion;
 import net.serenitybdd.screenplay.Performable;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
@@ -10,6 +11,7 @@ public class Usuario {
     private String clave;
     private String nombre;
     private String apellido;
+    private String direccion;
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
@@ -26,6 +28,9 @@ public class Usuario {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
     public Performable conDatosCorrectos() {
         setUsuario("ronald@yopmail.com");
@@ -34,8 +39,10 @@ public class Usuario {
     }
 
     public Performable conDatosNuevos() {
-        setNombre("nombre");
-        setApellido("apellido");
-        return instrumented(IniciaSesion.class, this.usuario, this.clave);
+        setNombre("nombre Test");
+        setApellido("apellido Test");
+        setDireccion("direccion Test");
+        setClave("Test2023+");
+        return instrumented(DiligenciarDatos.class, this.nombre, this.apellido, this.direccion, this.clave);
     }
 }

@@ -1,18 +1,17 @@
-package banco.tasks;
+package cinemark.tasks;
 
-import banco.models.factories.Usuario;
+import cinemark.models.factories.Usuario;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.type.Type;
 import net.thucydides.core.annotations.Step;
 
-import static banco.userinterfaces.HomePage.CAMPO_CORREO;
-import static banco.userinterfaces.HomePage.CAMPO_CONTRASENIA;
-import static banco.userinterfaces.HomePage.BOTON_CERRAR_MODAL;
-import static banco.userinterfaces.HomePage.BOTON_INGRESAR;
-import static banco.userinterfaces.HomePage.BOTON_INICIAR_SESION;
-
+import static cinemark.userinterfaces.HomePage.CAMPO_CORREO;
+import static cinemark.userinterfaces.HomePage.CAMPO_CONTRASENIA;
+import static cinemark.userinterfaces.HomePage.BOTON_CERRAR_MODAL;
+import static cinemark.userinterfaces.HomePage.BOTON_INGRESAR;
+import static cinemark.userinterfaces.HomePage.BOTON_INICIAR_SESION;
 
 public class IniciaSesion implements Task {
 
@@ -31,7 +30,6 @@ public class IniciaSesion implements Task {
     @Override
     @Step("{0} inicia sesi\u00F3n con usuario #usuario y contraseña #clave")
     public <T extends Actor> void performAs(T actor) {
-        //actor.remember(CORREO.getValor(),usuario);
         actor.attemptsTo(
                 Click.on(BOTON_CERRAR_MODAL),
                 Click.on(BOTON_INICIAR_SESION),

@@ -1,52 +1,32 @@
-package banco.tasks;
+package cinemark.tasks;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.Performable;
 
-public class ConvierteDatos {
+import java.util.Random;
 
-    public static double evaluarExpresion(String textoOperacionMatematica) throws ScriptException {
-        String expresionModificada = eliminarCaracteres(textoOperacionMatematica, "=", "?");
-        System.out.println("Expresión original: " + textoOperacionMatematica);
-        System.out.println("Expresión modificada: " + expresionModificada);
+public class ConvierteDatos implements Performable {
 
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
-
-        // Evaluar la expresión y devolver el resultado como un Double
-        return ((Number) engine.eval(expresionModificada)).doubleValue();
+    public static ConvierteDatos aleatorio() {
+        return new ConvierteDatos();
     }
 
-
-    public static String eliminarCaracteres(String input, String... caracteresAEliminar) {
-        // Iterar sobre los caracteres a eliminar y reemplazarlos con una cadena vacía
-        for (String caracter : caracteresAEliminar) {
-            input = input.replace(caracter, "");
+    private String generarNumeroAleatorio() {
+        String caracteres = "0123456789";
+        Random random = new Random();
+        StringBuilder numeroAleatorioBuilder = new StringBuilder(10);
+        for (int i = 0; i < 10; i++) {
+            int indice = random.nextInt(caracteres.length());
+            char caracterAleatorio = caracteres.charAt(indice);
+            numeroAleatorioBuilder.append(caracterAleatorio);
         }
-        return input;
+        System.out.println("EL NÚMERO A RETORNAR ES: " + numeroAleatorioBuilder.toString());
+        return numeroAleatorioBuilder.toString();
     }
 
-    public static String extraerNumeros(String input) {
-        // Utilizar una expresión regular para encontrar solo los caracteres numéricos
-        return input.replaceAll("[^0-9]", "");
-    }
-
-    public static String extraerLetraEspecial(String input) {
-        // Utilizar una expresión regular para encontrar solo los caracteres numéricos
-        Pattern pattern = Pattern.compile("\"([^\"]*)\"");
-        Matcher matcher = pattern.matcher(input);
-        if (matcher.find()) {
-            return matcher.group(1);
-        } else {
-            return ""; // Retornar una cadena vacía si no se encuentra ningún texto entre comillas
-        }
-    }
-
-    public static int convertirAEntero(String input) {
-        // Utilizar Integer.parseInt() para convertir la cadena a un valor entero
-        return Integer.parseInt(input);
+    @Override
+    public <T extends Actor> void performAs(T actor) {
+        String numeroAleatorio = generarNumeroAleatorio();
+        actor.remember("numeroAleatorio", numeroAleatorio);
     }
 }

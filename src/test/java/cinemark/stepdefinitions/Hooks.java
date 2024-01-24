@@ -1,4 +1,4 @@
-package banco.stepdefinitions;
+package cinemark.stepdefinitions;
 
 import cucumber.api.java.Before;
 import net.serenitybdd.screenplay.actors.OnStage;

@@ -1,4 +1,4 @@
-package banco.runners;
+package cinemark.runners;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.SnippetType;
@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(
         features = "src/test/resources/features/Autenticacion.feature",
-        glue = {"banco/stepdefinitions"},
+        glue = {"cinemark/stepdefinitions"},
         tags = {"@AutenticacionExitosa"},
         snippets = SnippetType.CAMELCASE
 )
